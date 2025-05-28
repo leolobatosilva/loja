@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Lista de Presença Digital</title>
+    
+    <!-- Meta tags para WhatsApp -->
+    <meta property="og:title" content="📋 Lista de Presença - Responda Aqui!">
+    <meta property="og:description" content="✅ VOU PARTICIPAR ou ❌ NÃO POSSO IR - Clique para responder rapidamente">
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%234facfe'/%3E%3Ctext x='200' y='100' text-anchor='middle' font-size='40' fill='white' font-family='Arial'%3E📋 Lista%3C/text%3E%3Ctext x='200' y='140' text-anchor='middle' font-size='20' fill='white' font-family='Arial'%3EClique para responder%3C/text%3E%3C/svg%3E">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .admin-section {
+            padding: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .admin-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .voting-section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .event-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .quick-response {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .vote-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .vote-btn {
+            padding: 20px 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 300px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .vote-btn.yes {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+
+        .vote-btn.no {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+
+        .vote-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .vote-btn:active {
+            transform: scale(0.95);
+        }
+
+        .mini-results {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .mini-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .mini-stat {
+            text-align: center;
+        }
+
+        .mini-stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .mini-stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .results-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .share-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .link-group {
+            margin-bottom: 15px;
+        }
+
+        .link-group h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .share-link {
+            background: white;
+            border: 2px solid #e1e5e9;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 5px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 5px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .vote-btn {
+                font-size: 1.1rem;
+                padding: 18px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Lista de Presença Digital</h1>
+            <p>Responda com um clique!</p>
+        </div>
+
+        <!-- Seção Admin -->
+        <div class="admin-section" id="adminSection">
+            <h2 class="admin-title">⚙️ Configurar Evento</h2>
+            
+            <div class="form-group">
+                <label for="eventTitle">Título do Evento:</label>
+                <input type="text" id="eventTitle" placeholder="Ex: Reunião de Equipe - Sexta 15h">
+            </div>
+
+            <div class="form-group">
+                <label for="eventDescription">Descrição (opcional):</label>
+                <textarea id="eventDescription" rows="3" placeholder="Detalhes sobre o evento..."></textarea>
+            </div>
+
+            <button class="btn" onclick="criarEvento()">
+                🚀 Criar Lista de Presença
+            </button>
+        </div>
+
+        <!-- Seção de Votação -->
+        <div class="voting-section hidden" id="votingSection">
+            <div class="event-info" id="eventInfo">
+                <div class="event-title" id="displayTitle">Evento</div>
+                <div id="displayDescription"></div>
+            </div>
+
+            <div class="quick-response">
+                <h3 style="margin-bottom: 15px;">⚡ Sua Resposta:</h3>
+                <div class="vote-buttons">
+                    <button class="vote-btn yes" onclick="respostaRapida('yes')">
+                        ✅ VOU PARTICIPAR
+                    </button>
+                    <button class="vote-btn no" onclick="respostaRapida('no')">
+                        ❌ NÃO POSSO IR
+                    </button>
+                </div>
+                <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 10px;">
+                    👆 Clique e pronto! Resposta automática
+                </p>
+            </div>
+
+            <div class="mini-results">
+                <h4 style="margin-bottom: 15px; color: #333;">📊 Resumo Atual:</h4>
+                <div class="mini-stats">
+                    <div class="mini-stat">
+                        <div class="mini-stat-number" id="miniYesCount">0</div>
+                        <div class="mini-stat-label">Confirmaram</div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="mini-stat-number" id="miniNoCount">0</div>
+                        <div class="mini-stat-label">Não podem</div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="mini-stat-number" id="miniTotalCount">0</div>
+                        <div class="mini-stat-label">Total</div>
+                    </div>
+                </div>
+                <a href="#" class="results-link" id="resultsLink" onclick="abrirResultados()">
+                    👀 Ver Resultados Completos (Atualização Automática)
+                </a>
+            </div>
+
+            <div class="share-section">
+                <div class="link-group">
+                    <h4>🔗 Para Participantes (WhatsApp):</h4>
+                    <div class="share-link" id="voteLink">Carregando...</div>
+                    <button class="btn" onclick="copiarLink('vote')">📋 Copiar Link de Votação</button>
+                </div>
+                
+                <div class="link-group">
+                    <h4>📊 Para Acompanhar Resultados:</h4>
+                    <div class="share-link" id="resultsLink">Carregando...</div>
+                    <button class="btn" onclick="copiarLink('results')">📋 Copiar Link dos Resultados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Estado da aplicação
+        let eventData = {
+            title: '',
+            description: '',
+            participants: [],
+            eventId: null
+        };
+
+        // Criar evento
+        function criarEvento() {
+            const title = document.getElementById('eventTitle').value.trim();
+            if (!title) {
+                alert('Por favor, digite o título do evento!');
+                return;
+            }
+
+            eventData.title = title;
+            eventData.description = document.getElementById('eventDescription').value.trim();
+            eventData.eventId = 'evento_' + Math.random().toString(36).substr(2, 9);
+            
+            // Salvar dados do evento
+            salvarDados();
+            
+            // Mostrar seção de votação
+            document.getElementById('adminSection').classList.add('hidden');
+            document.getElementById('votingSection').classList.remove('hidden');
+            
+            // Atualizar informações do evento
+            document.getElementById('displayTitle').textContent = eventData.title;
+            if (eventData.description) {
+                document.getElementById('displayDescription').innerHTML = `<p style="color: #666; margin-top: 10px;">${eventData.description}</p>`;
+            }
+            
+            // Gerar links
+            const baseUrl = window.location.href.split('?')[0];
+            const voteUrl = `${baseUrl}?vote=${eventData.eventId}`;
+            const resultsUrl = `${baseUrl}?results=${eventData.eventId}`;
+            
+            document.getElementById('voteLink').textContent = voteUrl;
+            document.getElementById('resultsLink').textContent = resultsUrl;
+            
+            updateResults();
+        }
+
+        // Resposta rápida
+        function respostaRapida(choice) {
+            const deviceId = getDeviceId();
+            const timestamp = new Date().toLocaleString('pt-BR');
+            
+            // Verificar se já votou
+            const existingIndex = eventData.participants.findIndex(p => p.deviceId === deviceId);
+            
+            if (existingIndex >= 0) {
+                eventData.participants[existingIndex].vote = choice;
+                eventData.participants[existingIndex].timestamp = timestamp;
+            } else {
+                eventData.participants.push({
+                    name: `Participante ${eventData.participants.length + 1}`,
+                    deviceId: deviceId,
+                    vote: choice,
+                    timestamp: timestamp
+                });
+            }
+
+            // Salvar dados
+            salvarDados();
+
+            // Feedback visual
+            const allButtons = document.querySelectorAll('.vote-btn');
+            const clickedButton = choice === 'yes' ? 
+                document.querySelector('.vote-btn.yes') : 
+                document.querySelector('.vote-btn.no');
+            
+            allButtons.forEach(btn => {
+                btn.style.opacity = '0.5';
+                btn.style.pointerEvents = 'none';
+            });
+            
+            clickedButton.style.opacity = '1';
+            clickedButton.style.transform = 'scale(1.1)';
+            clickedButton.innerHTML = choice === 'yes' ? 
+                '🎉 CONFIRMADO!' : 
+                '📝 REGISTRADO!';
+            
+            setTimeout(() => {
+                clickedButton.innerHTML = choice === 'yes' ? 
+                    '✅ VOU PARTICIPAR' : 
+                    '❌ NÃO POSSO IR';
+                clickedButton.style.transform = 'scale(1)';
+                
+                allButtons.forEach(btn => {
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                });
+            }, 2000);
+
+            updateResults();
+        }
+
+        // Atualizar resultados
+        function updateResults() {
+            const yesVotes = eventData.participants.filter(p => p.vote === 'yes').length;
+            const noVotes = eventData.participants.filter(p => p.vote === 'no').length;
+            const total = eventData.participants.length;
+            
+            document.getElementById('miniYesCount').textContent = yesVotes;
+            document.getElementById('miniNoCount').textContent = noVotes;
+            document.getElementById('miniTotalCount').textContent = total;
+        }
+
+        // Abrir página de resultados
+        function abrirResultados() {
+            const resultsUrl = `${window.location.href.split('?')[0]}?results=${eventData.eventId}`;
+            window.open(resultsUrl, '_blank');
+        }
+
+        // Gerar ID único do dispositivo
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('deviceId');
+            if (!deviceId) {
+                deviceId = 'device_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+                localStorage.setItem('deviceId', deviceId);
+            }
+            return deviceId;
+        }
+
+        // Salvar dados no localStorage
+        function salvarDados() {
+            localStorage.setItem(`evento_${eventData.eventId}`, JSON.stringify(eventData));
+        }
+
+        // Carregar dados do localStorage
+        function carregarDados(eventId) {
+            const dados = localStorage.getItem(`evento_${eventId}`);
+            if (dados) {
+                eventData = JSON.parse(dados);
+                return true;
+            }
+            return false;
+        }
+
+        // Copiar link
+        function copiarLink(type) {
+            const linkElement = type === 'vote' ? 'voteLink' : 'resultsLink';
+            const link = document.getElementById(linkElement).textContent;
+            
+            navigator.clipboard.writeText(link).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copiado!';
+                button.style.background = 'linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                }, 2000);
+            }).catch(() => {
+                alert('Erro ao copiar. Selecione e copie manualmente o link.');
+            });
+        }
+
+        // Verificar URL na inicialização
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const voteId = urlParams.get('vote');
+            const resultsId = urlParams.get('results');
+            
+            if (voteId) {
+                // Página de votação
+                if (carregarDados(voteId)) {
+                    document.getElementById('adminSection').classList.add('hidden');
+                    document.getElementById('votingSection').classList.remove('hidden');
+                    
+                    document.getElementById('displayTitle').textContent = eventData.title;
+                    if (eventData.description) {
+                        document.getElementById('displayDescription').innerHTML = `<p style="color: #666; margin-top: 10px;">${eventData.description}</p>`;
+                    }
+                    
+                    updateResults();
+                } else {
+                    alert('Evento não encontrado!');
+                }
+            } else if (resultsId) {
+                // Redirecionar para página de resultados
+                window.location.href = `resultados.html?id=${resultsId}`;
+            }
+        });
+
+        // Atualização automática a cada 3 segundos
+        setInterval(() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const voteId = urlParams.get('vote');
+            
+            if (voteId && eventData.eventId) {
+                // Recarregar dados atualizados
+                carregarDados(voteId);
+                updateResults();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
