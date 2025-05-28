@@ -329,7 +329,8 @@
             eventId = urlParams.get('id');
             
             if (!eventId) {
-                document.getElementById('eventTitle').textContent = 'Erro: ID do evento não encontrado';
+                // Se não tem ID, mostrar tela de instruções
+                mostrarTelaInstrucoes();
                 return false;
             }
 
@@ -338,9 +339,40 @@
                 eventData = JSON.parse(dados);
                 return true;
             } else {
-                document.getElementById('eventTitle').textContent = 'Evento não encontrado';
+                mostrarEventoNaoEncontrado();
                 return false;
             }
+        }
+
+        // Tela de instruções quando não há evento
+        function mostrarTelaInstrucoes() {
+            document.getElementById('eventTitle').textContent = 'Nenhum evento encontrado';
+            document.getElementById('eventDescription').innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h3>📋 Como usar:</h3>
+                    <p style="margin: 15px 0;">1. Acesse a <a href="index.html" style="color: #4facfe;">página principal</a></p>
+                    <p style="margin: 15px 0;">2. Configure seu evento</p>
+                    <p style="margin: 15px 0;">3. Use o link de resultados gerado</p>
+                    <a href="index.html" style="display: inline-block; background: #4facfe; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 20px;">
+                        🚀 Criar Nova Lista de Presença
+                    </a>
+                </div>
+            `;
+            document.getElementById('lastUpdate').textContent = '';
+        }
+
+        // Tela quando evento não é encontrado
+        function mostrarEventoNaoEncontrado() {
+            document.getElementById('eventTitle').textContent = 'Evento não encontrado';
+            document.getElementById('eventDescription').innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <p style="color: #666; margin-bottom: 20px;">O evento pode ter expirado ou o link está incorreto</p>
+                    <a href="index.html" style="display: inline-block; background: #4facfe; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none;">
+                        🔄 Criar Novo Evento
+                    </a>
+                </div>
+            `;
+            document.getElementById('lastUpdate').textContent = '';
         }
 
         // Atualizar interface
