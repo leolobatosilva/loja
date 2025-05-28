@@ -466,8 +466,17 @@
 
         // Abrir página de resultados
         function abrirResultados() {
-            const resultsUrl = `${window.location.href.split('?')[0]}?results=${eventData.eventId}`;
-            window.open(resultsUrl, '_blank');
+            if (!eventData.eventId) return;
+            
+            const resultsUrl = `resultados.html?id=${eventData.eventId}`;
+            
+            // Tentar abrir em nova aba
+            const newWindow = window.open(resultsUrl, '_blank');
+            
+            // Se não conseguir (popup bloqueado), redirecionar na mesma aba
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                window.location.href = resultsUrl;
+            }
         }
 
         // Gerar ID único do dispositivo
@@ -521,6 +530,13 @@
             const voteId = urlParams.get('vote');
             const resultsId = urlParams.get('results');
             
+            if (resultsId) {
+                // Redirecionar para página de resultados IMEDIATAMENTE
+                const resultsUrl = `resultados.html?id=${resultsId}`;
+                window.location.replace(resultsUrl);
+                return; // Para aqui para não executar o resto
+            }
+            
             if (voteId) {
                 // Página de votação
                 if (carregarDados(voteId)) {
@@ -536,9 +552,6 @@
                 } else {
                     alert('Evento não encontrado!');
                 }
-            } else if (resultsId) {
-                // Redirecionar para página de resultados
-                window.location.href = `resultados.html?id=${resultsId}`;
             }
         });
 
